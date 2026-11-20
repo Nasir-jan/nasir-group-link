@@ -1,0 +1,6 @@
+{
+  "name": "Nasir Group Links",
+  "description": "Apna Favourite Group Join Karo — Browse and join curated WhatsApp community groups cleanly and quickly.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
