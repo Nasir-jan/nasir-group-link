@@ -10,8 +10,11 @@ import {
   Search,
   Trophy,
   Users,
+  WifiOff,
   X,
 } from 'lucide-react';
+import { PWAInstallButton } from './components/PWAInstallButton';
+import { useOnlineStatus } from './hooks/usePWAInstall';
 import { WHATSAPP_GROUPS, type GroupItem } from './data/groups';
 
 const HERO_IMAGE_PATH = '/src/assets/images/ocean_beach_hero_1795164251173.jpg';
@@ -34,6 +37,7 @@ export default function App() {
   const [heroImageError, setHeroImageError] = useState(false);
   const [activeGroup, setActiveGroup] = useState<GroupItem | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const isOnline = useOnlineStatus();
 
   const directoryRef = useRef<HTMLElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -133,6 +137,9 @@ export default function App() {
             <span>Groups Dekho</span>
             <ArrowDown className="w-4 h-4" aria-hidden="true" />
           </button>
+
+          {/* App Download / Install option */}
+          <PWAInstallButton variant="hero" />
         </div>
       </section>
 
@@ -173,15 +180,18 @@ export default function App() {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={scrollToTop}
-                aria-label="Scroll back to top"
-                className="inline-flex items-center justify-center gap-1.5 min-h-[44px] min-w-[44px] px-3.5 rounded-full text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]"
-              >
-                <ArrowUp className="w-4 h-4" aria-hidden="true" />
-                <span className="hidden sm:inline">Top</span>
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <PWAInstallButton variant="card" />
+                <button
+                  type="button"
+                  onClick={scrollToTop}
+                  aria-label="Scroll back to top"
+                  className="inline-flex items-center justify-center gap-1.5 min-h-[44px] min-w-[44px] px-3 rounded-full text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]"
+                >
+                  <ArrowUp className="w-4 h-4" aria-hidden="true" />
+                  <span className="hidden sm:inline">Top</span>
+                </button>
+              </div>
             </div>
 
             {/* Search Bar */}
@@ -353,6 +363,17 @@ export default function App() {
       <footer className="w-full py-6 px-4 text-center">
         <p className="text-sm font-medium text-slate-500">Made by Nasir</p>
       </footer>
+
+      {!isOnline && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 z-40 inline-flex items-center justify-center gap-2 rounded-full bg-amber-600 px-4 py-2 text-xs font-medium text-white shadow-lg"
+        >
+          <WifiOff className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          <span>Offline Mode — Cached app ready</span>
+        </div>
+      )}
     </div>
   );
 }
